@@ -34,16 +34,19 @@
 			</c:if>
 		</div>
 		<div style="margin-left: 20px">
-		
+
 			<c:if test="${sessionScope.quiz_do.currentTimeDo eq null}">
 				<input type="hidden" id="timeTake"
 					value="${sessionScope.quiz_do.quizDTO.timeTake}" />
-				</c:if>
+			</c:if>
 			<c:if test="${sessionScope.quiz_do.currentTimeDo ne null}">
 				<input type="hidden" id="timeTake"
 					value="${sessionScope.quiz_do.currentTimeDo}" />
 			</c:if>
-			<h3 id="timer"></h3>
+			<div style="height: 50px">
+				<h3 id="timer"></h3>
+			</div>
+
 
 			<a style="margin-bottom: 20px" class="btn btn-danger" href="#">Finish
 				Quiz</a>
@@ -52,33 +55,34 @@
 			<div
 				style="border-style: solid; background-color: #ffffe6; border-color: #e6f2ff;">
 				<div style="display: inline;">
-					<input type="hidden" value="${quiz_do.numQuestion }" id="numQuestion"/>
+					<input type="hidden" value="${quiz_do.numQuestion }"
+						id="numQuestion" />
 					<c:forEach begin="1" end="${quiz_do.numQuestion}" var="i">
 						<form style="display: inline-block;" action="do_quiz"
 							method="POST">
-							<input type="hidden" id="inputTimer${i}" name="inputTimer"/>
-								 <input type="hidden"
-								name="id" value="${param.id }"></input> <input type="hidden"
-								name="questionId" value="${quiz_do.listQuestion.get(i-1).id}"></input>
+							<input type="hidden" id="inputTimer${i}" name="inputTimer" /> <input
+								type="hidden" name="id" value="${param.id }"></input> <input
+								type="hidden" name="questionId"
+								value="${quiz_do.listQuestion.get(i-1).id}"></input>
 							<c:if test="${param.questionId eq null }">
 								<c:if test="${i==1}">
-									<button type="submit" 
+									<button type="submit"
 										style="border-color: red; background-color: #e6f2ff; display: inline-block; width: 30px; border-style: solid; border-width: thin; text-align: center; margin: 10px">${i}</button>
 								</c:if>
 								<c:if test="${i!=1 }">
-									<button type="submit" 
+									<button type="submit"
 										style="background-color: #e6f2ff; display: inline-block; width: 30px; border-style: solid; border-width: thin; text-align: center; margin: 10px">${i}</button>
 								</c:if>
 							</c:if>
 							<c:if test="${param.questionId ne null }">
 								<c:if
 									test="${quiz_do.listQuestion.get(i-1).id eq param.questionId }">
-									<button type="submit" 
+									<button type="submit"
 										style="border-color: red; background-color: #e6f2ff; display: inline-block; width: 30px; border-style: solid; border-width: thin; text-align: center; margin: 10px">${i}</button>
 								</c:if>
 								<c:if
 									test="${quiz_do.listQuestion.get(i-1).id ne param.questionId}">
-									<button type="submit" 
+									<button type="submit"
 										style="background-color: #e6f2ff; display: inline-block; width: 30px; border-style: solid; border-width: thin; text-align: center; margin: 10px">${i}</button>
 								</c:if>
 							</c:if>
@@ -92,21 +96,64 @@
 				style="height: 500px; border-style: solid; padding: 50px; background-color: #ffffe6; border-color: #e6f2ff;">
 				<label>Question: </label>
 				<p>${requestScope.questionDo.content}</p>
+				<input type="hidden" id="questionDoId"
+					value="${requestScope.questionDo.id }">
 				<div style="display: inline-block;">
-					<b style="text-decoration:">A</b> <input name="rdAnswer"
-						type="radio" onclick="chooseAnswer(this)" value="A">
+					<b style="text-decoration:">A</b>
+					<c:choose>
+						<c:when test="${'A'== requestScope.questionDo.chooseAnswer }">
+							<input checked name="rdAnswer" type="radio"
+								onclick="chooseAnswer(this)" value="A">
+						</c:when>
+						<c:when test="${'A' != requestScope.questionDo.chooseAnswer }">
+							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
+								value="A">
+						</c:when>
+					</c:choose>
+
 					<p>${requestScope.questionDo.answerA}</p>
 				</div>
 				<div>
-					<b>B</b> <input onclick="chooseAnswer(this)" value="B" name="rdAnswer" type="radio">
+
+					<b>B</b>
+					<c:choose>
+						<c:when test="${'B' == requestScope.questionDo.chooseAnswer }">
+							<input checked name="rdAnswer" type="radio"
+								onclick="chooseAnswer(this)" value="B">
+						</c:when>
+						<c:when test="${'B' != requestScope.questionDo.chooseAnswer }">
+							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
+								value="B">
+						</c:when>
+					</c:choose>
 					<p>${requestScope.questionDo.answerB}</p>
 				</div>
 				<div>
-					<b>C</b> <input name="rdAnswer" type="radio" onclick="chooseAnswer(this)" value="C">
+					<b>C</b>
+					<c:choose>
+						<c:when test="${'C' == requestScope.questionDo.chooseAnswer }">
+							<input checked name="rdAnswer" type="radio"
+								onclick="chooseAnswer(this)" value="C">
+						</c:when>
+						<c:when test="${'C' != requestScope.questionDo.chooseAnswer }">
+							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
+								value="C">
+						</c:when>
+					</c:choose>
 					<p>${requestScope.questionDo.answerC}</p>
 				</div>
 				<div>
-					<b>D</b> <input name="rdAnswer" type="radio" onclick="chooseAnswer(this)" value="D">
+					<b>D</b>
+					<c:choose>
+						<c:when test="${'D' == requestScope.questionDo.chooseAnswer }">
+							<input checked name="rdAnswer" type="radio"
+								onclick="chooseAnswer(this)" value="D">
+						</c:when>
+						<c:when test="${'D' != requestScope.questionDo.chooseAnswer }">
+							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
+								value="D">
+						</c:when>
+					</c:choose>
 					<p>${requestScope.questionDo.answerD}</p>
 				</div>
 			</div>
@@ -114,6 +161,12 @@
 	</div>
 	<%@ include file="static/footer.jsp"%>
 </body>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	var count = document.getElementById("timeTake").value;
 	var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
@@ -134,8 +187,20 @@
 		document.getElementById("timer").innerHTML = minutes + ":" + seconds; // watch for spelling
 	}
 	const chooseAnswer=(input)=>{
-		
-		alert(input.value)
+		var questionId= document.getElementById("questionDoId").value;
+		$.ajax({
+            url: "http://localhost:8080/QuizWebSpring/api/choose_answer",
+            method: "GET",
+            cache: false,
+            data: {
+                answer: input.value,
+                questionId:questionId
+            },
+            success: function (data, textStatus, jqXHR) {
+            	alert(data);
+                return true;
+            }
+        });
 	}
 </script>
 </html>

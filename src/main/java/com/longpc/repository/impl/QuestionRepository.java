@@ -111,7 +111,6 @@ public class QuestionRepository implements IQuestionRepository{
 					session.enableFilter("content").setParameter("content","%"+questionEntity.getContent()+"%");
 				}
 			}
-			
 			StringBuilder hql=new StringBuilder("select count (q.id) from QuestionEntity q");
 			transaction.begin();
 			long count=0;
