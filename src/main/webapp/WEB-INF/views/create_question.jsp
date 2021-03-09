@@ -40,7 +40,7 @@
 					action="create_question" method="POST">
 					<div class="form-group">
 						<label for="question">Question</label>
-						<form:textarea class="form-control" id="question"
+						<form:textarea class="form-control" id="questionContent"
 							placeholder="Enter question" name="txtQuestion" path="content"></form:textarea>
 						<p id='messageQuestion' style="color: red"></p>
 					</div>
@@ -132,51 +132,51 @@
 		var ansB= document.getElementById("ansB").value.trim()
 		var ansC= document.getElementById('ansC').value.trim()
 		var ansD= document.getElementById("ansD").value.trim()
-		var question= document.getElementById('question').value.trim()
-		
-		
+		var question= document.getElementById('questionContent').value
 		messageQuestion.innerHTML=""
 		messageA.innerHTML=""
 		messageB.innerHTML=""
 		messageC.innerHTML=""
 		messageD.innerHTML=""
-		if(!messageQuestion&&!messageA&&!messageB&&!messageC&&!messageD	){
-			messageA.innerHTML="Invalid answer A"
-			messageB.innerHTML="Invalid answer B"
-			messageC.innerHTML="Invalid answer C"
-			messageD.innerHTML="Invalid answer D"
-			messageQuestion.innerHTML="Invalid question"
-			return false;
-		}
-		if(!question){
-			messageQuestion.innerHTML="Invalid question"
-			return false;
-		}
-		if(!ansA){
-			messageA.innerHTML="Invalid answer A"
-			return false;
-		}
-		if(!ansB){
-			messageB.innerHTML="Invalid answer B"
-			return false;
-		}
-		if(!ansC){
-			messageC.innerHTML="Invalid answer C"
-			return false;
-		}
-		if(!ansD){
-			messageD.innerHTML="Invalid answer D"
-			return false;
-		}
-		var x = document.getElementsByClassName("answer");
-		for (var i = 0; i < x.length-1; i++) {
-			for(var j=i+1;j<x.length;j++){
-				if(x.item(i).value==x.item(j).value){
-					console.log(x.item(i).value)
-					return false;
-				}
+		
+			if(!messageQuestion&&!messageA&&!messageB&&!messageC&&!messageD	){
+				messageA.innerHTML="Invalid answer A"
+				messageB.innerHTML="Invalid answer B"
+				messageC.innerHTML="Invalid answer C"
+				messageD.innerHTML="Invalid answer D"
+				messageQuestion.innerHTML="Invalid question"
+				return false;
 			}
-		}
+			if(!question){
+				messageQuestion.innerHTML="Invalid question"
+				return false;
+			}
+			if(!ansA){
+				messageA.innerHTML="Invalid answer A"
+				return false;
+			}
+			if(!ansB){
+				messageB.innerHTML="Invalid answer B"
+				return false;
+			}
+			if(!ansC){
+				messageC.innerHTML="Invalid answer C"
+				return false;
+			}
+			if(!ansD){
+				messageD.innerHTML="Invalid answer D"
+				return false;
+			}
+			var x = document.getElementsByClassName("answer");
+			for (var i = 0; i < x.length-1; i++) {
+				for(var j=i+1;j<x.length;j++){
+					if(x.item(i).value==x.item(j).value){
+						alert("Giá trị "+x.item(i).value+" bị trùng")
+						console.log(x.item(i).value)
+						return false;
+					}
+				}
+			}	
 		return true;
 	}
 	

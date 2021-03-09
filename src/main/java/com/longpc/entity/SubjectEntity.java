@@ -13,7 +13,6 @@ public class SubjectEntity {
 	private String id;
 	@Column
 	private String name;
-	private String test;
 	public SubjectEntity() {
 		
 	}
@@ -34,12 +33,5 @@ public class SubjectEntity {
 		this.name = name;
 	}
 	
-	public String getTest() {
-		return test;
-	}
 	
-	
-	public void setTest(String test) {
-		this.test = test;
-	}
 }

@@ -1,8 +1,6 @@
 package com.longpc.repository.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.hibernate.query.Query;

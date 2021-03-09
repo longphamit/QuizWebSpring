@@ -21,16 +21,15 @@ import com.longpc.repository.IUserRepository;
 public class UserRepository implements IUserRepository {
 	@Autowired
 	private SessionFactory sessionFactory;
-	public UserEntity findById(String email,String password) throws Exception{
+	public UserEntity findById(String email) throws Exception{
 		Transaction transaction=null;
-		String hql="From UserEntity where email =:email and password =:password";
+		String hql="From UserEntity where email =:email";
 		Session session=sessionFactory.openSession();
 		transaction=session.beginTransaction();
 		try {
 			
 			Query<UserEntity> query=session.createQuery(hql,UserEntity.class);
 			query.setParameter("email",email);
-			query.setParameter("password",password);
 			UserEntity userEntity= query.getSingleResult();
 			transaction.commit();
 			return userEntity;

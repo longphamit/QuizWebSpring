@@ -15,6 +15,7 @@ import com.longpc.dto.MessageDTO;
 import com.longpc.dto.RegisterDTO;
 import com.longpc.entity.UserEntity;
 import com.longpc.service.IUserService;
+import com.longpc.util.BCryptUtil;
 import com.longpc.util.FieldConstant;
 
 @Controller
@@ -39,7 +40,7 @@ public class RegisterController {
 		try {
 			UserEntity userEntity= new UserEntity();
 			userEntity.setEmail(email);
-			userEntity.setPassword(password);
+			userEntity.setPassword(BCryptUtil.hashPassword(password));
 			userEntity.setName(name);
 			userEntity.setPhone(phone);
 			userEntity.setRole("CUSTOMER");

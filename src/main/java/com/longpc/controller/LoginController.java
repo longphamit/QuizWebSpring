@@ -34,19 +34,27 @@ public class LoginController {
 		MessageDTO messageDTO = new MessageDTO();
 		try {
 			UserEntity userEntity = userService.checkLogin(email, password);
-			model.addAttribute("user", userEntity);
-			messageDTO.setContent("welcome " + userEntity.getEmail());
-			messageDTO.setStatus(true);
-			session.setAttribute("message", messageDTO);
-			if (userEntity.getRole().equals(RoleConstant.AMIN_ROLE)) {
-				url = "redirect:/admin";
+			if (userEntity == null) {
+				messageDTO.setContent("Bạn nhập sai email hoặc mật khẩu");
+				messageDTO.setStatus(false);
+				session.setAttribute("message", messageDTO);
+				url = "redirect:/";
 			} else {
-				url = "redirect:/home";
+				model.addAttribute("user", userEntity);
+				messageDTO.setContent("welcome " + userEntity.getEmail());
+				messageDTO.setStatus(true);
+				session.setAttribute("message", messageDTO);
+				if (userEntity.getRole().equals(RoleConstant.AMIN_ROLE)) {
+					url = "redirect:/admin";
+				} else {
+					url = "redirect:/home";
+				}
+				session.setAttribute(FieldConstant.USER, userEntity);
 			}
-			session.setAttribute(FieldConstant.USER, userEntity);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(e instanceof NoResultException) {
+			if (e instanceof NoResultException) {
 				messageDTO.setContent("Bạn nhập sai email hoặc mật khẩu");
 				messageDTO.setStatus(false);
 				session.setAttribute("message", messageDTO);

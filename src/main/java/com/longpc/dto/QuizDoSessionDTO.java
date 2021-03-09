@@ -11,6 +11,21 @@ public class QuizDoSessionDTO implements Serializable{
 	private HashMap<String,QuestionDTO> hashQuestion;
 	private String currentTimeDo;
 	private QuizDTO quizDTO;
+	private double score;
+	private String doBy;
+	
+	public double getScore() {
+		return score;
+	}
+	public void setScore(double score) {
+		this.score = score;
+	}
+	public String getDoBy() {
+		return doBy;
+	}
+	public void setDoBy(String doBy) {
+		this.doBy = doBy;
+	}
 	public String getQuizId() {
 		return quizId;
 	}

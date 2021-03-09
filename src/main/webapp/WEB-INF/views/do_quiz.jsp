@@ -47,9 +47,9 @@
 				<h3 id="timer"></h3>
 			</div>
 
-
-			<a style="margin-bottom: 20px" class="btn btn-danger" href="#">Finish
-				Quiz</a>
+			<form action="<c:url value='/finish_quiz'/>" method="POST">
+				<button class="btn btn-danger">Finish Quiz</button>
+			</form>
 		</div>
 		<div class="col-sm-4">
 			<div
@@ -93,7 +93,7 @@
 		</div>
 		<div class="col-sm-8">
 			<div
-				style="height: 500px; border-style: solid; padding: 50px; background-color: #ffffe6; border-color: #e6f2ff;">
+				style="border-style: solid; padding: 50px; background-color: #ffffe6; border-color: #e6f2ff;">
 				<label>Question: </label>
 				<p>${requestScope.questionDo.content}</p>
 				<input type="hidden" id="questionDoId"
@@ -181,10 +181,23 @@
 		var seconds = count % 60;
 		var minutes = Math.floor(count / 60);
 		minutes %= 60;
-		for(var i=1;i<=numQuestion;i++){
-			document.getElementById("inputTimer"+i).value = minutes * 60 + seconds;
+		if(seconds==0&&minutes==0){
+			$.ajax({
+	            url: "http://localhost:8080/QuizWebSpring/api/finish_quiz",
+	            method: "POST",
+	            cache: false,
+	            success: function (data, textStatus, jqXHR) {
+	            	alert("Time out")
+	            	location.replace("http://localhost:8080/QuizWebSpring/review_quiz");
+	            }
+	        });
+		}else{
+			for(var i=1;i<=numQuestion;i++){
+				document.getElementById("inputTimer"+i).value = minutes * 60 + seconds;
+			}
+			document.getElementById("timer").innerHTML = minutes + ":" + seconds; // watch for spelling
 		}
-		document.getElementById("timer").innerHTML = minutes + ":" + seconds; // watch for spelling
+		
 	}
 	const chooseAnswer=(input)=>{
 		var questionId= document.getElementById("questionDoId").value;

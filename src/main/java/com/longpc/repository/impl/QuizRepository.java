@@ -11,7 +11,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.longpc.entity.QuestionEntity;
 import com.longpc.entity.QuestionQuizEntity;
 import com.longpc.entity.QuizEntity;
 import com.longpc.repository.IQuizRepository;

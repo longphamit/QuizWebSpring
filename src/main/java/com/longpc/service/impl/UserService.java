@@ -1,5 +1,6 @@
 package com.longpc.service.impl;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,11 @@ public class UserService implements IUserService {
 	public IUserRepository userRepository;
 	
 	public UserEntity checkLogin(String email, String password) throws Exception {
-		return userRepository.findById(email, password);
+		UserEntity userEntity=userRepository.findById(email);
+		if(BCrypt.checkpw(password, userEntity.getPassword())) {
+			return userEntity;
+		}
+		return null;
 	}
 
 	public UserEntity register(UserEntity userEntity)throws Exception {
