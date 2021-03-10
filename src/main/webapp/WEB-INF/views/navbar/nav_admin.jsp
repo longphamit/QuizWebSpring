@@ -40,7 +40,7 @@
 						<a href="#">View Subject</a>
 					</div>
 					<div>
-						<a href="#">Create Subject</a>
+						<a href="<c:url value='/admin/create_subject'/>">Create Subject</a>
 					</div>
 				</div>
 			</div>

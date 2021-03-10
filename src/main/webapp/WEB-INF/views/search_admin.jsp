@@ -22,9 +22,7 @@
 				<div class="form-group">
 					<form:select path="subjectId">
 						<form:option value="" label="Môn học"></form:option>
-						<form:option value = "1" label = "Toán"/>
-						<form:option value = "2" label = "Văn"/>
-						<form:option value = "3" label = "Anh"/>
+						<form:options items="${listSubject}" />
 					</form:select>
 				</div>
 				<div class="form-group">

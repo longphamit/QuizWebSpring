@@ -2,6 +2,7 @@ package com.longpc.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class SubjectService implements ISubjectService {
 			listResultDTOs.add(modelMapper.map(e,SubjectDTO.class));
 		}
 		return listResultDTOs;
+	}
+	public boolean createSubject(SubjectDTO subjectDTO) throws Exception {
+		subjectDTO.setId(UUID.randomUUID().toString());
+		return subjectRepository.createSubject(modelMapper.map(subjectDTO,SubjectEntity.class));
 	}
 
 }

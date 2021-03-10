@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>REGISTER</title>
 <meta charset="UTF-8">
 <title>Login</title>
 <link rel="stylesheet"

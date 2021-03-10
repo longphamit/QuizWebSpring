@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.core.annotation.Order;
 
+import com.longpc.dto.MessageDTO;
 import com.longpc.entity.UserEntity;
 import com.longpc.util.FieldConstant;
 @Order(2)
@@ -33,6 +34,10 @@ public class RoleFilter implements Filter {
 			UserEntity userEntity= (UserEntity) session.getAttribute(FieldConstant.USER);
 			if(userEntity==null||userEntity.getRole().equals("CUSTOMER")) {
 				if(req.getServletPath().contains("/admin")) {
+					MessageDTO messageDTO= new MessageDTO();
+					messageDTO.setContent("403 - Invalid Role");
+					messageDTO.setStatus(false);
+					session.setAttribute(FieldConstant.MESSAGE, messageDTO);
 					resp.sendRedirect(req.getContextPath()+"/error");
 					return;
 				}
