@@ -9,4 +9,5 @@ public interface IQuestionRepository {
 	public List<QuestionEntity> search(QuestionEntity questionEntity,int offset) throws Exception;
 	public List<QuestionEntity> search(String quizId) throws Exception;
 	public long countAll(QuestionEntity questionEntity) throws Exception;
+	public boolean setStatus(String status,String id) throws Exception;
 }

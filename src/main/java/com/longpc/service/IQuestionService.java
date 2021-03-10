@@ -12,4 +12,5 @@ public interface IQuestionService {
 	public List<QuestionDTO> search(SearchQuestionDTO searchQuestionDTO,int offset) throws Exception;
 	public List<QuestionDTO> search(String quizId ) throws Exception;
 	public long countAll(SearchQuestionDTO searchQuestionDTO) throws Exception;
+	public boolean setStatus(String status,String id) throws Exception;
 }

@@ -60,5 +60,8 @@ public class QuestionService implements IQuestionService{
 		}
 		return null;
 	}
+	public boolean setStatus(String status, String id) throws Exception {
+		return questionRepository.setStatus(status, id);
+	}
 
 }

@@ -131,5 +131,27 @@ public class QuestionRepository implements IQuestionRepository{
 			session.close();
 		}
 	}
+	public boolean setStatus(String status,String id) throws Exception{
+		Session session=sessionFactory.openSession();
+		Transaction transaction=session.getTransaction();
+		String hql="update QuestionEntity set status=:status where id=:id";
+		try {
+			transaction.begin();
+			Query query =session.createQuery(hql);
+			query.setParameter("id",id);
+			query.setParameter("status", status);
+			int check=query.executeUpdate();
+			transaction.commit();
+			return check>0;
+		}catch(Exception e) {
+			if(transaction!=null) {
+				transaction.rollback();
+			}
+			throw e;
+			
+		}finally {
+			session.close();
+		}
+	}
 	
 }

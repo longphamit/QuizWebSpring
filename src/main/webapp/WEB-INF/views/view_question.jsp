@@ -50,6 +50,8 @@
 						<th scope="col">Content</th>
 						<th scope="col">Answer</th>
 						<th scope="col">Right Answer</th>
+						<th scope='col'>Status</th>
+						<th scope='col'>Set status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,11 +65,17 @@
 								<div>D: ${item.answerD}</div>
 							</td>
 							<td>${item.rightAnswer}</td>
-							<td><c:if test="${item.status ne 'DISABLE' }">
-									<button class='btn btn-danger'>Disable</button>
-								</c:if> <c:if test="${item.status eq 'DISABLE' }">
-									<button class='btn btn-success'>ACTIVE</button>
-								</c:if></td>
+							<td>${item.status}</td>
+							<td>
+								
+									<c:if test="${item.status ne 'DISABLE' }">
+										<button id="${item.id }" title="DISABLE" onclick="setStatusQuestion(this)" class='btn btn-danger'>DISABLE</button>
+									</c:if>
+									<c:if test="${item.status eq 'DISABLE' }">
+										<button id="${item.id }" title="ACTIVE" onclick="setStatusQuestion(this)" class='btn btn-success'>ACTIVE</button>
+									</c:if>
+								
+							</td>
 							<td>
 								<button class="btn btn-warning">UPDATE</button>
 							</td>
@@ -77,6 +85,21 @@
 			</table>
 		</div>
 	</div>
-
+	<script>
+		const setStatusQuestion=(button)=>{
+			$.ajax({
+	            url: "http://localhost:8080/QuizWebSpring/api/update_status",
+	            method: "POST",
+	            cache: false,
+	            data: {
+	            	questionId:button.id,
+	            	status:button.title,
+	            },
+	            success: function (data, textStatus, jqXHR) {
+	            	window.location.reload(true); 
+	            }
+	        });
+		}
+	</script>
 </body>
 </html>
