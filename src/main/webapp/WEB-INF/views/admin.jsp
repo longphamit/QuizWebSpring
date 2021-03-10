@@ -34,43 +34,7 @@
 				<c:remove var="message" scope="session" />
 			</c:if>
 		</div>
-		<div>
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="well">
-						<p>Text</p>
-						<p>Text</p>
-						<p>Text</p>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="well">
-						<p>Text</p>
-						<p>Text</p>
-						<p>Text</p>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="well">
-						<p>Text</p>
-						<p>Text</p>
-						<p>Text</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-8">
-					<div class="well">
-						<p>Text</p>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="well">
-						<p>Text</p>
-					</div>
-				</div>
-			</div>
-		</div>
+		
 	</div>
 	<%@ include file="static/footer.jsp" %>
 </body>

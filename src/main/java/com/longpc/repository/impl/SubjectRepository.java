@@ -27,7 +27,7 @@ public class SubjectRepository implements ISubjectRepository {
 			transaction.begin();
 			result = session.createQuery(hql,SubjectEntity.class).list();
 			transaction.commit();
-			return result;// lay dung y chua			
+			return result;		
 		}catch (Exception e) {
 			if(null!=transaction) {
 				transaction.rollback();

@@ -15,8 +15,10 @@ public class UserService implements IUserService {
 	
 	public UserEntity checkLogin(String email, String password) throws Exception {
 		UserEntity userEntity=userRepository.findById(email);
-		if(BCrypt.checkpw(password, userEntity.getPassword())) {
-			return userEntity;
+		if(userEntity!=null) {
+			if(BCrypt.checkpw(password, userEntity.getPassword())) {
+				return userEntity;
+			}
 		}
 		return null;
 	}

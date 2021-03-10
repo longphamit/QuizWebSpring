@@ -77,7 +77,7 @@ public class QuestionRepository implements IQuestionRepository{
 		Session session=sessionFactory.openSession();
 		Transaction transaction=session.beginTransaction();
 		try {
-			StringBuilder hql=new StringBuilder("select q from QuestionQuizEntity qq, QuestionEntity q where qq.quizId=:quizId and qq.questionId=q.id ");
+			StringBuilder hql=new StringBuilder("select q from QuestionQuizEntity qq, QuestionEntity q where qq.quizId=:quizId and qq.questionId=q.id order by NEWID() ");
 			Query <QuestionEntity> query= session.createQuery(hql.toString(),QuestionEntity.class);
 			query.setParameter("quizId", quizId);
 			List<QuestionEntity>test= query.list();

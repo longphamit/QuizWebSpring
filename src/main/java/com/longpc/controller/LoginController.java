@@ -51,7 +51,6 @@ public class LoginController {
 				}
 				session.setAttribute(FieldConstant.USER, userEntity);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (e instanceof NoResultException) {

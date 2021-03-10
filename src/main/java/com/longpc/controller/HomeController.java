@@ -1,6 +1,7 @@
 package com.longpc.controller;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public class HomeController {
 
 		return "home";
 	}
+
 	@RequestMapping(value = "/view_subject", method = RequestMethod.GET)
 	public String getViewSubjectIndex(@RequestParam("id") String id, Model model, HttpSession session) {
 		MessageDTO messageDTO = new MessageDTO();
@@ -65,6 +67,7 @@ public class HomeController {
 		}
 		return "view_quiz";
 	}
+
 	@RequestMapping(value = "/do_quiz", method = RequestMethod.GET)
 	public String getViewDoQuizIndex(@RequestParam("id") String id, @RequestParam(required = false) String questionId,
 			Model model, HttpSession session) {
@@ -76,7 +79,7 @@ public class HomeController {
 				QuizDTO quizDTO = quizService.findById(id);
 				session.setAttribute("quiz", quizDTO);
 				List<QuestionDTO> listQuestion = questionService.search(id);
-				HashMap<String, QuestionDTO> questions = new HashMap<String, QuestionDTO>();
+				LinkedHashMap<String, QuestionDTO> questions = new LinkedHashMap<String, QuestionDTO>();
 				for (QuestionDTO questionDTO : listQuestion) {
 					questions.put(questionDTO.getId(), questionDTO);
 				}
@@ -86,11 +89,12 @@ public class HomeController {
 				quizDoSessionDTO.setQuizDTO(quizDTO);
 				session.setAttribute(FieldConstant.QUIZ_DO, quizDoSessionDTO);
 				QuestionDTO questionDTO = quizDoSessionDTO.getListQuestion().get(0);
-				model.addAttribute("questionDo", questionDTO);
+				session.setAttribute("questionDo", questionDTO);
 			} else {
+				
 				QuizDoSessionDTO quizDoSessionDTO = (QuizDoSessionDTO) session.getAttribute(FieldConstant.QUIZ_DO);
 				QuestionDTO questionDTO = quizDoSessionDTO.getListQuestion().get(0);
-				model.addAttribute("questionDo", questionDTO);
+				session.setAttribute("questionDo", questionDTO);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,16 +112,36 @@ public class HomeController {
 			quizDoSessionDTO.setCurrentTimeDo(inputTimer);
 			if (questionId != null) {
 				QuestionDTO questionDTO = quizDoSessionDTO.getHashQuestion().get(questionId);
-				model.addAttribute("questionDo", questionDTO);
+				session.setAttribute("questionDo", questionDTO);
 			} else {
 				QuestionDTO questionDTO = quizDoSessionDTO.getListQuestion().get(0);
-				model.addAttribute("questionDo", questionDTO);
+				session.setAttribute("questionDo", questionDTO);
 			}
 			session.setAttribute(FieldConstant.QUIZ_DO, quizDoSessionDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		return "redirect:/do_question?questionId="+questionId;
+	}
+
+	@RequestMapping(value = "/next_question", method = RequestMethod.POST)
+	public String nextQuestion(@RequestParam("id") String id,@RequestParam("next") String next,@RequestParam("questionId") String questionId,
+			@RequestParam("inputTimer") String inputTimer, Model model, HttpSession session) {
+		MessageDTO messageDTO = new MessageDTO();
+		try {
+			QuizDoSessionDTO quizDoSessionDTO = (QuizDoSessionDTO) session.getAttribute(FieldConstant.QUIZ_DO);
+			quizDoSessionDTO.setCurrentTimeDo(inputTimer);
+			QuestionDTO questionDTO = quizDoSessionDTO.getListQuestion().get(Integer.parseInt(next)-1);
+			session.setAttribute("questionDo", questionDTO);
+			session.setAttribute(FieldConstant.QUIZ_DO, quizDoSessionDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/do_question?questionId="+questionId;
+	}
+	@GetMapping("/do_question")
+	public String getQuestion(@RequestParam("questionId")String questionId) {
 		return "do_quiz";
 	}
 
@@ -139,7 +163,7 @@ public class HomeController {
 			quizDoSessionDTO.setDoBy(userEntity.getEmail());
 			session.removeAttribute(FieldConstant.QUIZ_DO);
 			quizDoService.saveQuizDo(quizDoSessionDTO);
-			ResultQuizDTO resultQuizDTO= new ResultQuizDTO();
+			ResultQuizDTO resultQuizDTO = new ResultQuizDTO();
 			resultQuizDTO.setTotal(quizDoSessionDTO.getNumQuestion());
 			resultQuizDTO.setNumRight(point);
 			resultQuizDTO.setScore(quizDoSessionDTO.getScore());
@@ -149,6 +173,7 @@ public class HomeController {
 		}
 		return "redirect:/review_quiz";
 	}
+
 	@GetMapping("/review_quiz")
 	public String getReviewQuizIndex() {
 		return "review_quiz";

@@ -32,6 +32,9 @@ public class UserRepository implements IUserRepository {
 			query.setParameter("email",email);
 			UserEntity userEntity= query.getSingleResult();
 			transaction.commit();
+			if(!userEntity.getEmail().equals(email)) {
+				return null;
+			}
 			return userEntity;
 		}catch (Exception e) {
 			if(transaction!=null&& e instanceof NoResultException==false) {

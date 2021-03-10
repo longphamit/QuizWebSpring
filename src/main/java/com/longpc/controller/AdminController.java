@@ -44,15 +44,24 @@ public class AdminController {
 	}
 	
 	@GetMapping("/create_question")
-	public String indexCreateQuestion(Model model) {
+	public String indexCreateQuestion(Model model,HttpSession session) {
 		String url="error";
 		try {
 			QuestionDTO questionDTO= new QuestionDTO();
 			List<SubjectDTO> listSubjects= subjectService.findAll();
+			
 			url="create_question";
-			HashMap<String,String> comboxBoxSubject= new HashMap<String, String>();
-			for(SubjectDTO subjectDTO:listSubjects) {
-				comboxBoxSubject.put(subjectDTO.getId(),subjectDTO.getName());
+			HashMap<String,String> comboxBoxSubject= null;
+			if(listSubjects!=null) {
+				comboxBoxSubject=new HashMap<String, String>();
+				for(SubjectDTO subjectDTO:listSubjects) {
+					comboxBoxSubject.put(subjectDTO.getId(),subjectDTO.getName());
+				}
+			}else {
+				MessageDTO messageDTO= new MessageDTO();
+				messageDTO.setStatus(false);
+				messageDTO.setContent("Không có môn học");
+				session.setAttribute(FieldConstant.MESSAGE, messageDTO);
 			}
 			model.addAttribute("question",questionDTO);
 			model.addAttribute("listSubject",comboxBoxSubject);
@@ -81,10 +90,11 @@ public class AdminController {
 		return url;
 	}
 	@PostMapping("/create_quiz")
-	public String createQuiz(@ModelAttribute("quiz")QuizDTO quiz,HttpSession session) {
+	public String createQuiz(@ModelAttribute("quiz")QuizDTO quiz,@RequestParam("cbxNumQuestion") String cbxNumQuestion,HttpSession session) {
 		String url="error";
 		MessageDTO messageDTO= new MessageDTO();
 		try {
+			quiz.setNumQuestion(Integer.parseInt(cbxNumQuestion));
 			quizService.createQuiz(quiz);
 			messageDTO.setContent("Tạo quiz thành công");
 			messageDTO.setStatus(true);

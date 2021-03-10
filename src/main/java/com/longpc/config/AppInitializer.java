@@ -6,6 +6,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.longpc.filter.RequestResponeLoggingFilter;
+import com.longpc.filter.RoleFilter;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 	@Override
@@ -29,7 +30,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter characterEncodingFilter= new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
-		return new Filter[] {characterEncodingFilter, new RequestResponeLoggingFilter()};
+		return new Filter[] {characterEncodingFilter, new RequestResponeLoggingFilter(), new RoleFilter()};
 	}
 
 }

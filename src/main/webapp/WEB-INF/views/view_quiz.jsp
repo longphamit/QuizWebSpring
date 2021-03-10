@@ -39,6 +39,8 @@
 					<div class="col-sm-12">
 						<div class="well">
 							<h4>${quiz.name}</h4>
+							<b>Num question:</b> <h5>${quiz.numQuestion}</h5>
+							<b>Time:</b> <h5>${quiz.timeTake/60 } minutes</h5>
 							<div>
 								<a class="btn btn-success"  href='<c:url value="/do_quiz?id=${quiz.id}"/>'>Do Quiz</a>
 							</div>

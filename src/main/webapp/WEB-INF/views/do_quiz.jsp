@@ -16,9 +16,6 @@
 <body>
 	<div class="container-fluid">
 		<div>
-			<%@ include file="navbar/nav_home.jsp"%>
-		</div>
-		<div>
 			<c:if test="${sessionScope.message!=null}">
 				<c:choose>
 					<c:when test="${sessionScope.message.status==false}">
@@ -50,8 +47,10 @@
 			<form action="<c:url value='/finish_quiz'/>" method="POST">
 				<button class="btn btn-danger">Finish Quiz</button>
 			</form>
+
 		</div>
 		<div class="col-sm-4">
+
 			<div
 				style="border-style: solid; background-color: #ffffe6; border-color: #e6f2ff;">
 				<div style="display: inline;">
@@ -66,6 +65,7 @@
 								value="${quiz_do.listQuestion.get(i-1).id}"></input>
 							<c:if test="${param.questionId eq null }">
 								<c:if test="${i==1}">
+									<c:set var="next" value="${i+1 }"></c:set>
 									<button type="submit"
 										style="border-color: red; background-color: #e6f2ff; display: inline-block; width: 30px; border-style: solid; border-width: thin; text-align: center; margin: 10px">${i}</button>
 								</c:if>
@@ -75,8 +75,10 @@
 								</c:if>
 							</c:if>
 							<c:if test="${param.questionId ne null }">
+
 								<c:if
 									test="${quiz_do.listQuestion.get(i-1).id eq param.questionId }">
+									<c:set var="next" value="${i+1}"></c:set>
 									<button type="submit"
 										style="border-color: red; background-color: #e6f2ff; display: inline-block; width: 30px; border-style: solid; border-width: thin; text-align: center; margin: 10px">${i}</button>
 								</c:if>
@@ -92,71 +94,85 @@
 			</div>
 		</div>
 		<div class="col-sm-8">
+
 			<div
 				style="border-style: solid; padding: 50px; background-color: #ffffe6; border-color: #e6f2ff;">
 				<label>Question: </label>
-				<p>${requestScope.questionDo.content}</p>
+				<p>${sessionScope.questionDo.content}</p>
 				<input type="hidden" id="questionDoId"
-					value="${requestScope.questionDo.id }">
-				<div style="display: inline-block;">
+					value="${sessionScope.questionDo.id }">
+				<div style="border-style: solid; margin-bottom: 10px;padding: 10px;border-color: #ebfaeb">
 					<b style="text-decoration:">A</b>
 					<c:choose>
-						<c:when test="${'A'== requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'A'== sessionScope.questionDo.chooseAnswer }">
 							<input checked name="rdAnswer" type="radio"
 								onclick="chooseAnswer(this)" value="A">
 						</c:when>
-						<c:when test="${'A' != requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'A' != sessionScope.questionDo.chooseAnswer }">
 							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
 								value="A">
 						</c:when>
 					</c:choose>
 
-					<p>${requestScope.questionDo.answerA}</p>
+					<p>${sessionScope.questionDo.answerA}</p>
 				</div>
-				<div>
+				<div style="border-style: solid; margin-bottom: 10px;padding: 10px;border-color: #ebfaeb">
 
 					<b>B</b>
 					<c:choose>
-						<c:when test="${'B' == requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'B' == sessionScope.questionDo.chooseAnswer }">
 							<input checked name="rdAnswer" type="radio"
 								onclick="chooseAnswer(this)" value="B">
 						</c:when>
-						<c:when test="${'B' != requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'B' != sessionScope.questionDo.chooseAnswer }">
 							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
 								value="B">
 						</c:when>
 					</c:choose>
-					<p>${requestScope.questionDo.answerB}</p>
+					<p>${sessionScope.questionDo.answerB}</p>
 				</div>
-				<div>
+				<div style="border-style: solid; margin-bottom: 10px;padding: 10px;border-color: #ebfaeb">
 					<b>C</b>
 					<c:choose>
-						<c:when test="${'C' == requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'C' == sessionScope.questionDo.chooseAnswer }">
 							<input checked name="rdAnswer" type="radio"
 								onclick="chooseAnswer(this)" value="C">
 						</c:when>
-						<c:when test="${'C' != requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'C' != sessionScope.questionDo.chooseAnswer }">
 							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
 								value="C">
 						</c:when>
 					</c:choose>
-					<p>${requestScope.questionDo.answerC}</p>
+					<p>${sessionScope.questionDo.answerC}</p>
 				</div>
-				<div>
+				<div style="border-style: solid; margin-bottom: 10px;padding: 10px;border-color: #ebfaeb">
 					<b>D</b>
 					<c:choose>
-						<c:when test="${'D' == requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'D' == sessionScope.questionDo.chooseAnswer }">
 							<input checked name="rdAnswer" type="radio"
 								onclick="chooseAnswer(this)" value="D">
 						</c:when>
-						<c:when test="${'D' != requestScope.questionDo.chooseAnswer }">
+						<c:when test="${'D' != sessionScope.questionDo.chooseAnswer }">
 							<input name="rdAnswer" type="radio" onclick="chooseAnswer(this)"
 								value="D">
 						</c:when>
 					</c:choose>
-					<p>${requestScope.questionDo.answerD}</p>
+					<p>${sessionScope.questionDo.answerD}</p>
 				</div>
 			</div>
+			<c:if test="${quiz_do.listQuestion.size()>=next}">
+				<form action="<c:url value='next_question'/>" method="POST">
+					<input type="hidden" name="id" value="${param.id}"></input> <input
+						type="hidden" name="questionId"
+						value="${quiz_do.listQuestion.get(next-1).id}"></input> <input
+						type="hidden" id="inputTimerNext" name="inputTimer" /> <input
+						type="hidden" name="next" value="${next}" />
+					<button type="submit" class="btn btn-warning">Next
+						Question</button>
+				</form>
+			</c:if>
+
+
 		</div>
 	</div>
 	<%@ include file="static/footer.jsp"%>
@@ -195,9 +211,11 @@
 			for(var i=1;i<=numQuestion;i++){
 				document.getElementById("inputTimer"+i).value = minutes * 60 + seconds;
 			}
+			if(null!=document.getElementById("inputTimerNext")){
+				document.getElementById("inputTimerNext").value=minutes * 60 + seconds;
+			}
 			document.getElementById("timer").innerHTML = minutes + ":" + seconds; // watch for spelling
 		}
-		
 	}
 	const chooseAnswer=(input)=>{
 		var questionId= document.getElementById("questionDoId").value;
@@ -210,7 +228,6 @@
                 questionId:questionId
             },
             success: function (data, textStatus, jqXHR) {
-            	alert(data);
                 return true;
             }
         });

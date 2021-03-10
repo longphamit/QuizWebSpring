@@ -22,6 +22,9 @@ public class SubjectService implements ISubjectService {
 	public List<SubjectDTO> findAll() throws Exception {
 		List<SubjectEntity> listResultEntities= subjectRepository.findAll();
 		List<SubjectDTO> listResultDTOs=new ArrayList<SubjectDTO>();
+		if(listResultEntities==null) {
+			return null;
+		}
 		for(SubjectEntity e:listResultEntities) {
 			listResultDTOs.add(modelMapper.map(e,SubjectDTO.class));
 		}

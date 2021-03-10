@@ -26,7 +26,6 @@ public class RequestResponeLoggingFilter implements Filter{
         Logger logger= Logger.getLogger(req.getServletPath());
         logger.info(req.getRemoteHost()+req.getContextPath()+req.getServletPath());
         chain.doFilter(request, response);
-		
 	}
 
 	public void init(FilterConfig filterConfig) throws ServletException {

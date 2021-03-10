@@ -3,8 +3,6 @@
 		<h2>Logo</h2>
 		<ul class="nav nav-pills nav-stacked">
 			<li class="active"><a href="#section1">Dashboard</a></li>
-			<li><a href="#section2">Age</a></li>
-			<li><a href="#section3">Gender</a></li>
 			<li><a href="<c:url value='/logout'/>">Logout</a></li>
 		</ul>
 		<br>
@@ -22,7 +20,6 @@
 					<div>
 						<a href="<c:url value='/admin/create_quiz'/>">Create Quiz</a>
 					</div>
-
 				</div>
 			</div>
 			<div class="col-sm-3">
