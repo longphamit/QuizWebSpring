@@ -39,7 +39,7 @@
 				<form:form modelAttribute="quiz" action="create_quiz" method="POST"
 					onsubmit="return checkForm()">
 					<div class="form-group">
-						<label for="question">Question</label>
+						<label for="question">Quiz name</label>
 						<form:input class="form-control" id="name"
 							placeholder="Enter name" path="name"></form:input>
 						<p id='messageName' style="color: red"></p>

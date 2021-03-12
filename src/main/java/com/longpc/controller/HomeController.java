@@ -73,7 +73,6 @@ public class HomeController {
 			Model model, HttpSession session) {
 		MessageDTO messageDTO = new MessageDTO();
 		try {
-
 			if (session.getAttribute(FieldConstant.QUIZ_DO) == null) {
 				QuizDoSessionDTO quizDoSessionDTO = new QuizDoSessionDTO();
 				QuizDTO quizDTO = quizService.findById(id);
@@ -88,14 +87,7 @@ public class HomeController {
 				quizDoSessionDTO.setHashQuestion(questions);
 				quizDoSessionDTO.setQuizDTO(quizDTO);
 				session.setAttribute(FieldConstant.QUIZ_DO, quizDoSessionDTO);
-				QuestionDTO questionDTO = quizDoSessionDTO.getListQuestion().get(0);
-				session.setAttribute("questionDo", questionDTO);
-			} else {
-				
-				QuizDoSessionDTO quizDoSessionDTO = (QuizDoSessionDTO) session.getAttribute(FieldConstant.QUIZ_DO);
-				QuestionDTO questionDTO = quizDoSessionDTO.getListQuestion().get(0);
-				session.setAttribute("questionDo", questionDTO);
-			}
+			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -144,34 +136,44 @@ public class HomeController {
 	public String getQuestion(@RequestParam("questionId")String questionId) {
 		return "do_quiz";
 	}
-
 	@RequestMapping(value = "/finish_quiz", method = RequestMethod.POST)
 	public String finishQuiz(HttpSession session) {
+		String url="error";
 		try {
 			int point = 0;
 			QuizDoSessionDTO quizDoSessionDTO = (QuizDoSessionDTO) session.getAttribute(FieldConstant.QUIZ_DO);
-			HashMap<String, QuestionDTO> hashQuestion = quizDoSessionDTO.getHashQuestion();
-			for (Map.Entry<String, QuestionDTO> entry : hashQuestion.entrySet()) {
-				if (entry.getValue().getChooseAnswer() != null) {
-					if (entry.getValue().getChooseAnswer().equals(entry.getValue().getRightAnswer())) {
-						point += 1;
+			if(quizDoSessionDTO==null) {
+				MessageDTO messageDTO= new MessageDTO();
+				messageDTO.setContent("Quiz already submit");
+				messageDTO.setStatus(false);
+				session.setAttribute(FieldConstant.MESSAGE, messageDTO);
+				url="home";
+			}else {
+				HashMap<String, QuestionDTO> hashQuestion = quizDoSessionDTO.getHashQuestion();
+				for (Map.Entry<String, QuestionDTO> entry : hashQuestion.entrySet()) {
+					if (entry.getValue().getChooseAnswer() != null) {
+						if (entry.getValue().getChooseAnswer().equals(entry.getValue().getRightAnswer())) {
+							point += 1;
+						}
 					}
 				}
+				UserEntity userEntity = (UserEntity) session.getAttribute(FieldConstant.USER);
+				quizDoSessionDTO.setScore((point * 10) / quizDoSessionDTO.getNumQuestion());
+				quizDoSessionDTO.setDoBy(userEntity.getEmail());
+				session.removeAttribute(FieldConstant.QUIZ_DO);
+				quizDoService.saveQuizDo(quizDoSessionDTO);
+				ResultQuizDTO resultQuizDTO = new ResultQuizDTO();
+				resultQuizDTO.setTotal(quizDoSessionDTO.getNumQuestion());
+				resultQuizDTO.setNumRight(point);
+				resultQuizDTO.setScore(quizDoSessionDTO.getScore());
+				session.setAttribute("resultQuiz", resultQuizDTO);
+				url="redirect:/review_quiz";
 			}
-			UserEntity userEntity = (UserEntity) session.getAttribute(FieldConstant.USER);
-			quizDoSessionDTO.setScore((point * 10) / quizDoSessionDTO.getNumQuestion());
-			quizDoSessionDTO.setDoBy(userEntity.getEmail());
-			session.removeAttribute(FieldConstant.QUIZ_DO);
-			quizDoService.saveQuizDo(quizDoSessionDTO);
-			ResultQuizDTO resultQuizDTO = new ResultQuizDTO();
-			resultQuizDTO.setTotal(quizDoSessionDTO.getNumQuestion());
-			resultQuizDTO.setNumRight(point);
-			resultQuizDTO.setScore(quizDoSessionDTO.getScore());
-			session.setAttribute("resultQuiz", resultQuizDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
-		return "redirect:/review_quiz";
+		return url;
 	}
 
 	@GetMapping("/review_quiz")
