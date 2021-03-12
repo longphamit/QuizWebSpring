@@ -59,23 +59,36 @@
 						<tr>
 							<td>${item.content }</td>
 							<td>
-								<div>A: ${item.answerA}</div>
-								<div>B: ${item.answerB}</div>
-								<div>C: ${item.answerC}</div>
-								<div>D: ${item.answerD}</div>
+								<div>
+									<b>A:</b> ${item.answerA}
+								</div>
+								<div>
+									<b>B:</b> ${item.answerB}
+								</div>
+								<div>
+									<b>C:</b> ${item.answerC}
+								</div>
+								<div>
+									<b>D:</b> ${item.answerD}
+								</div>
 							</td>
 							<td>${item.rightAnswer}</td>
-							<td>${item.status}</td>
-							<td>
-								
-									<c:if test="${item.status ne 'DISABLE' }">
-										<button id="${item.id }" title="DISABLE" onclick="setStatusQuestion(this)" class='btn btn-danger'>DISABLE</button>
-									</c:if>
-									<c:if test="${item.status eq 'DISABLE' }">
-										<button id="${item.id }" title="ACTIVE" onclick="setStatusQuestion(this)" class='btn btn-success'>ACTIVE</button>
-									</c:if>
-								
-							</td>
+							<td><c:if test="${item.status ne 'DISABLE' }">
+									<h4>
+										<span class="label label-success">${item.status}</span>
+									</h4>
+								</c:if> <c:if test="${item.status eq 'DISABLE' }">
+									<h4>
+										<span class="label label-danger">${item.status}</span>
+									</h4>
+								</c:if></td>
+							<td><c:if test="${item.status ne 'DISABLE' }">
+									<button id="${item.id }" title="DISABLE"
+										onclick="setStatusQuestion(this)" class='btn btn-danger'>DISABLE</button>
+								</c:if> <c:if test="${item.status eq 'DISABLE' }">
+									<button id="${item.id }" title="ACTIVE"
+										onclick="setStatusQuestion(this)" class='btn btn-success'>ACTIVE</button>
+								</c:if></td>
 							<td>
 								<button class="btn btn-warning">UPDATE</button>
 							</td>
@@ -87,19 +100,37 @@
 	</div>
 	<script>
 		const setStatusQuestion=(button)=>{
-			$.ajax({
-	            url: "http://localhost:8080/QuizWebSpring/api/update_status",
-	            method: "POST",
-	            cache: false,
-	            data: {
-	            	questionId:button.id,
-	            	status:button.title,
-	            },
-	            success: function (data, textStatus, jqXHR) {
-	            	window.location.reload(true); 
-	            }
-	        });
-		}
+			if(button.title=='DISABLE'){
+				if(confirm("Bạn có muốn DISABLE")){
+					$.ajax({
+			            url: "http://localhost:8080/QuizWebSpring/api/update_status",
+			            method: "POST",
+			            cache: false,
+			            data: {
+			            	questionId:button.id,
+			            	status:button.title,
+			            },
+			            success: function (data, textStatus, jqXHR) {
+			            	window.location.reload(true); 
+			            }
+			        });
+				}
+				}else{
+					$.ajax({
+			            url: "http://localhost:8080/QuizWebSpring/api/update_status",
+			            method: "POST",
+			            cache: false,
+			            data: {
+			            	questionId:button.id,
+			            	status:button.title,
+			            },
+			            success: function (data, textStatus, jqXHR) {
+			            	window.location.reload(true); 
+			            }
+			        });
+				}
+			}
+			
 	</script>
 </body>
 </html>

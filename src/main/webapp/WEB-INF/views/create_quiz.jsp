@@ -46,7 +46,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="ansB">Time Take</label>
+						<label for="ansB">Time Take (minutes)</label>
 						<form:input class="form-control answer" id="timeTake" type="text"
 							path="timeTake"></form:input>
 						<p id='messageTimeTake' style="color: red"></p>
@@ -98,24 +98,23 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script type="text/javascript">
 	const checkForm=()=>{
+		var rexNum=new RegExp('[A-Za-z\.]{1,}')
 		var messageName=document.getElementById('messageName');
 		var messageTimeTake=document.getElementById('messageTimeTake');
 		var messageSubject=document.getElementById('messageSubject');
+		var messageNumQuestion=document.getElementById('messageNumQuestion');
 		
+		var numQuestion=document.getElementById('cbxNumQuestion').value.trim();
 		var subject=document.getElementById('subjectId').value.trim()
 		var name= document.getElementById('name').value.trim()
 		var timeTake= document.getElementById("timeTake").value.trim()
-	
+
 		messageName.innerHTML=""
 		messageTimeTake.innerHTML=""
 		messageSubject.innerHTML=""
-		if(!name&&timeTake==0&&subject==""){
+		if(!name&&timeTake==0&&!subject){
 			messageName.innerHTML="Invalid Name"
 			messageTimeTake.innerHTML="Invalid Time Take"
-			messageSubject.innerHTML="Invalid Subject"	
-			return false;
-		}
-		if(subject==""){
 			messageSubject.innerHTML="Invalid Subject"	
 			return false;
 		}
@@ -126,30 +125,47 @@
 		if(timeTake==0){
 			messageTimeTake.innerHTML="Invalid Time Take"
 			return false;
+		}else{
+			if(rexNum.test(timeTake)){
+				messageTimeTake.innerHTML="Invalid Time Take"
+				return false;	
+			}
+		}	
+		if(!subject){
+			messageSubject.innerHTML="Invalid Subject"	
+			return false;
+		}
+		if(!numQuestion){
+			messageNumQuestion.innerHTML="Invalid num of question."
+			return false;
 		}
 		
 		
 		return true;
 	}
 	const checkSubject=(select)=>{
-		$.ajax({
-            url: "http://localhost:8080/QuizWebSpring/api/num_question",
-            method: "GET",
-            cache: false,
-            data: {
-                subjectId:select.options[select.selectedIndex].value
-            },
-            success: function (data, textStatus, jqXHR) {
-            	var options="";
-            	for(var i=1;i<=parseInt(data);i++){
-            		options+='<option value="'+i+'">'+i+'</option>'
-            	}
-            	$("#cbxNumQuestion").html(options)
-                document.getElementById("inputNumQuestion").style.visibility="visible"
-            }
-        });
+		if(select.options[select.selectedIndex].value==""){
+			$("#cbxNumQuestion").html("")
+			document.getElementById("inputNumQuestion").style.visibility="hidden"
+		}else{
+			$.ajax({
+	            url: "http://localhost:8080/QuizWebSpring/api/num_question",
+	            method: "GET",
+	            cache: false,
+	            data: {
+	                subjectId:select.options[select.selectedIndex].value
+	            },
+	            success: function (data, textStatus, jqXHR) {
+	            	var options="";
+	            	for(var i=1;i<=parseInt(data);i++){
+	            		options+='<option value="'+i+'">'+i+'</option>'
+	            	}
+	            	$("#cbxNumQuestion").html(options)
+	                document.getElementById("inputNumQuestion").style.visibility="visible"
+	            }
+	        });
+		}
 	}
-	
 	</script>
 </body>
 

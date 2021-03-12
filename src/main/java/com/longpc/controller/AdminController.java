@@ -99,6 +99,7 @@ public class AdminController {
 		MessageDTO messageDTO = new MessageDTO();
 		try {
 			quiz.setNumQuestion(Integer.parseInt(cbxNumQuestion));
+			quiz.setTimeTake(quiz.getTimeTake()*60);
 			quizService.createQuiz(quiz);
 			messageDTO.setContent("Tạo quiz thành công");
 			messageDTO.setStatus(true);

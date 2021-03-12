@@ -44,18 +44,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-3">
-				<div class="well">
-					<h4>Question</h4>
-					<div>
-						<a href="#">View Question</a>
-					</div>
-					<div>
-						<a href="#">Create Question</a>
-					</div>
-				</div>
-			</div>
 		</div>
-		
 	</div>
 </div>

@@ -68,7 +68,7 @@
 				
 				<button type="submit" class="btn btn-danger">Đăng ký</button>
 			</form>
-			<a href="login">Quay về đăng nhập</a>
+			<a href="<c:url value='/'/>">Quay về đăng nhập</a>
 		</div>
 
 	</div>
