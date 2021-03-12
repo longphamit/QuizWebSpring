@@ -1,5 +1,6 @@
 package com.longpc.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -86,6 +87,7 @@ public class HomeController {
 				quizDoSessionDTO.setListQuestion(listQuestion);
 				quizDoSessionDTO.setHashQuestion(questions);
 				quizDoSessionDTO.setQuizDTO(quizDTO);
+				quizDoSessionDTO.setStartTime(quizDTO.getTimeTake()*1000+new Date().getTime());
 				session.setAttribute(FieldConstant.QUIZ_DO, quizDoSessionDTO);
 			} 
 		} catch (Exception e) {

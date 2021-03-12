@@ -13,6 +13,7 @@ public class QuizDoSessionDTO implements Serializable{
 	private String currentTimeDo;
 	private QuizDTO quizDTO;
 	private double score;
+	private long startTime;
 	private String doBy;
 	
 	public double getScore() {
@@ -64,6 +65,12 @@ public class QuizDoSessionDTO implements Serializable{
 	}
 	public void setHashQuestion(LinkedHashMap<String,QuestionDTO> hashQuestion) {
 		this.hashQuestion = hashQuestion;
+	}
+	public long getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 	
 	
